@@ -1,14 +1,14 @@
 //
-//  trendingMoviesTests.swift
-//  trendingMoviesTests
+//  TrendingMoviesTests.swift
+//  TrendingMoviesTests
 //
 //  Created by El houssaine El GAMOUZ on 26/8/2024.
 //
 
 import XCTest
-@testable import trendingMovies
+@testable import TrendingMovies
 
-final class trendingMoviesTests: XCTestCase {
+final class TrendingMoviesTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

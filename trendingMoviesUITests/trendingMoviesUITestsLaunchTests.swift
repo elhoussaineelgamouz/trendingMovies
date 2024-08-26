@@ -1,13 +1,13 @@
 //
-//  trendingMoviesUITestsLaunchTests.swift
-//  trendingMoviesUITests
+//  TrendingMoviesUITestsLaunchTests.swift
+//  TrendingMoviesUITests
 //
 //  Created by El houssaine El GAMOUZ on 26/8/2024.
 //
 
 import XCTest
 
-final class trendingMoviesUITestsLaunchTests: XCTestCase {
+final class TrendingMoviesUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
