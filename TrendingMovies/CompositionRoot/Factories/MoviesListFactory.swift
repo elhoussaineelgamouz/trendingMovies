@@ -10,6 +10,9 @@ import UIKit
 
 protocol MoviesListFactory {
     func makeModel(coordinator: MoviesListFactoryControllerCoordinator) -> UIViewController
+    func makeMovieDetailsCoordinator(
+        navigation: UINavigationController,
+        movieItem: MovieItem) -> Coordinator
 }
 
 struct MoviesListFactoryImp: MoviesListFactory {
@@ -22,5 +25,11 @@ struct MoviesListFactoryImp: MoviesListFactory {
         let moviesListController = MoviesListViewController(viewModel: moviesListViewModel, coordinator: coordinator)
         moviesListController.title = AppLocalized.appName
         return moviesListController
+    }
+
+    func makeMovieDetailsCoordinator(navigation: UINavigationController, movieItem: MovieItem) -> Coordinator {
+        let movieDetailsFactory = MovieDetailsFactoryImp()
+        let moviedetailsCoordinator = MovieDetailsCoordinator(navigation: navigation, movieDetailsFactory: movieDetailsFactory, movieItem: movieItem)
+        return moviedetailsCoordinator
     }
 }

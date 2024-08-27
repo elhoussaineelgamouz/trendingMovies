@@ -13,17 +13,17 @@ protocol MoviesListViewModel {
     var state: PassthroughSubject<StateController, Never> { get }
     var moviesListItemsCount: Int { get }
     func viewDidLoad()
-    func getItemMenuViewModel(indexPath: IndexPath) -> MovieItem
+    func getItemMovieModel(indexPath: IndexPath) -> MovieItem
 }
 
 final class MoviesListViewModelIpm: MoviesListViewModel {
     var state: PassthroughSubject<StateController, Never>
 
     private let loadMoviesListUseCase: LoadMoviesListUseCase
-    private var MoviesListItems: [MovieItem] = []
+    private var moviesListItems: [MovieItem] = []
 
     var moviesListItemsCount: Int {
-        MoviesListItems.count
+        moviesListItems.count
     }
 
     init(state: PassthroughSubject<StateController, Never>, loadMoviesListUseCase: LoadMoviesListUseCase) {
@@ -42,15 +42,14 @@ final class MoviesListViewModelIpm: MoviesListViewModel {
     private func updateUI(result: Result<[MovieItem], Error>) {
         switch result {
         case .success(let moviesListItems):
-            self.MoviesListItems = moviesListItems
+            self.moviesListItems = moviesListItems
             state.send(.success)
         case .failure(let error):
             state.send(.fail(error: error.localizedDescription))
         }
     }
 
-    func getItemMenuViewModel(indexPath: IndexPath) -> MovieItem {
-        return MoviesListItems[indexPath.row]
+    func getItemMovieModel(indexPath: IndexPath) -> MovieItem {
+        return moviesListItems[indexPath.row]
     }
-
 }

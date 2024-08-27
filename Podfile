@@ -8,6 +8,7 @@ target 'TrendingMovies' do
 pod "RxSwift"
 pod "RxCocoa"
 pod "RxDataSources"
+pod 'Kingfisher', '~> 7.0'
 
   # Pods for TrendingMovies
 

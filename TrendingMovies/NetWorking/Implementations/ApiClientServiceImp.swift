@@ -42,6 +42,7 @@ struct ApiClientServiceImp: ApiClientService {
     }
 
     private func decodeMode<T: Decodable>(data: Data) throws -> T {
+        let str = String(decoding: data, as: UTF8.self)
         let decoder = JSONDecoder()
         let model = try? decoder.decode(T.self, from: data)
         guard let model = model else { throw ApiError.errorDecoding }

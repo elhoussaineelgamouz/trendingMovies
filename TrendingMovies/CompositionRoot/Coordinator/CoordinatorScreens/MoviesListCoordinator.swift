@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 final class MoviesListCoordinator: Coordinator {
     var navigation: UINavigationController
@@ -23,7 +24,8 @@ final class MoviesListCoordinator: Coordinator {
 }
 
 extension MoviesListCoordinator: MoviesListFactoryControllerCoordinator {
-    func didSelectItemMovieCell(model: MovieItem) {
-        print("MovieItemMovieItem")
+    func didSelectItemMovieCell(movieItem: MovieItem) {
+        let movieDetailsCoordinator = moviesListFactory.makeMovieDetailsCoordinator(navigation: navigation, movieItem: movieItem)
+        movieDetailsCoordinator.start()
     }
 }

@@ -7,6 +7,6 @@
 
 struct AppLocalized {
     static let error = "Error"
-    static let appName = "Rick and Morty"
+    static let appName = "Trending Movies"
     static let okButton = "Ok"
 }

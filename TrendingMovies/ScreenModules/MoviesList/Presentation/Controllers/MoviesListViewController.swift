@@ -6,18 +6,14 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
-import RxDataSources
+import Kingfisher
 import Combine
 
 protocol MoviesListFactoryControllerCoordinator: AnyObject {
-    func didSelectItemMovieCell(model: MovieItem)
+    func didSelectItemMovieCell(movieItem: MovieItem)
 }
 
 class MoviesListViewController: UIViewController {
-
-    let disposebag = DisposeBag()
 
     @IBOutlet weak var moviesListTableView: UITableView!
     private let viewModel: MoviesListViewModel
@@ -29,23 +25,25 @@ class MoviesListViewController: UIViewController {
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.viewDidLoad()
         stateController()
         setupTableView()
-        // Do any additional setup after loading the view.
     }
 
     private func setupTableView() {
-        moviesListTableView.register(ItemMovieTableViewCell.self, forCellReuseIdentifier: "ItemMovieTableViewCell")
+        self.moviesListTableView.register(UINib(nibName: "ItemMovieTableViewCell", bundle: nil), forCellReuseIdentifier: ItemMovieTableViewCell.reuseIndentifier)
         moviesListTableView.dataSource = self
-       }
+        moviesListTableView.delegate = self
+        moviesListTableView.separatorStyle = .none
+        moviesListTableView.rowHeight = ViewValues.defaultHeightContainerCell
+    }
 
     private func stateController() {
         viewModel
@@ -70,9 +68,19 @@ extension MoviesListViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ItemMovieTableViewCell", for: indexPath) as! ItemMovieTableViewCell
-        let movieItem = viewModel.getItemMenuViewModel(indexPath: indexPath)
-       // cell.ItemMovieName.text = ""
+        let cell = tableView.dequeueReusableCell(withIdentifier: ItemMovieTableViewCell.reuseIndentifier, for: indexPath) as! ItemMovieTableViewCell
+        let movieItem = viewModel.getItemMovieModel(indexPath: indexPath)
+        cell.movieTitleLabel.text = movieItem.title
+        let formattedDate = DateFormatterHelper.shared.parseDate(movieItem.release_date ?? "")
+        cell.movieReleaseDateLabel.text = DateFormatterHelper.shared.formatDate(formattedDate ?? Date())
+        cell.movieImage.kf.setImage(with: URL(string: Endpoint.baseImageUrl + (movieItem.poster_path ?? "")))
         return cell
+    }
+}
+
+extension MoviesListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let movieItem = viewModel.getItemMovieModel(indexPath: indexPath)
+        self.coordinator?.didSelectItemMovieCell(movieItem: movieItem)
     }
 }
