@@ -11,4 +11,6 @@ struct ViewValues {
     static let doublePadding: CGFloat = 20
     static let defaultCornerRadius: CGFloat = 10
     static let defaultHeightContainerCell:CGFloat =  120
+    static let tagIdentifierSpinner = 123
+    static let opacityContainerSpinner = 0.3
 }

@@ -12,30 +12,30 @@ import Kingfisher
 protocol MovieDetailsViewControllerCoordinator {}
 
 class MovieDetailsViewController: UIViewController {
-
+    
     private let viewModel: MovieDetailsViewModel
     private var cancellable = Set<AnyCancellable>()
-
+    
     @IBOutlet weak var movieImageImageView: UIImageView!
     @IBOutlet weak var movieNameLabel: UILabel!
     @IBOutlet weak var movieReleaseDateLabel: UILabel!
     @IBOutlet weak var movieDescription: UILabel!
-
+    
     init(viewModel: MovieDetailsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.viewDidLoad()
         stateController()
     }
-
+    
     private func stateController() {
         viewModel
             .state
@@ -49,11 +49,14 @@ class MovieDetailsViewController: UIViewController {
                     self?.movieReleaseDateLabel.text = DateFormatterHelper.shared.formatDate(formattedDate ?? Date())
                     self?.movieDescription.text = movieItem?.overview
                     self?.movieImageImageView.kf.setImage(with: URL(string: Endpoint.baseImageUrl + (movieItem?.poster_path ?? "")))
+                    self?.HideSpinner()
                 case .loading:
-                    print("show spinner")
+                    self?.ShowSpinner()
                 case .fail(let error):
-                    print("Unfortunately we have an error")
+                    self?.presentAlert(Message: error, title: AppLocalized.error)
                 }
             }.store(in: &cancellable)
     }
 }
+extension MovieDetailsViewController: SpinnerDisplayable {}
+extension MovieDetailsViewController: MessageDisplayable {}

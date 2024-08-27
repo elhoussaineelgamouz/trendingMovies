@@ -53,10 +53,11 @@ class MoviesListViewController: UIViewController {
                 switch state {
                 case .success:
                     self?.moviesListTableView.reloadData()
+                    self?.HideSpinner()
                 case .loading:
-                    print("show spinner")
+                    self?.ShowSpinner()
                 case .fail(let error):
-                    print("Unfortunately we have an error")
+                    self?.presentAlert(Message: error, title: AppLocalized.error)
                 }
             }.store(in: &cancellable)
     }
@@ -84,3 +85,6 @@ extension MoviesListViewController: UITableViewDelegate {
         self.coordinator?.didSelectItemMovieCell(movieItem: movieItem)
     }
 }
+
+extension MoviesListViewController: SpinnerDisplayable {}
+extension MoviesListViewController: MessageDisplayable {}
